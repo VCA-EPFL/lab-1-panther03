@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/ZA44tux2)
 # lab1_a: Combinational Exercises and Debugging Sequential Machines
 
 In the second week of class, we'll be releasing the main component of the lab (`lab1_b`). This pre-lab is meant to warm you up and give you some practice with Bluespec and reasoning about hardware. It is also meant to give you a chance to see points of confusion that we can clarify in office hours or recitation.
