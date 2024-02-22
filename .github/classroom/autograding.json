@@ -1,0 +1,64 @@
+{
+  "tests": [
+    {
+      "name": "Alu Test",
+      "setup": "",
+      "run": "cat output1.log",
+      "input": "",
+      "output": "Test passed",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Arbiter Test",
+      "setup": "",
+      "run": "cat output2.log",
+      "input": "",
+      "output": "Test passed",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Shifter",
+      "setup": "",
+      "run": "cat output3.log",
+      "input": "",
+      "output": "Left barrel shifter test passed",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Debugging 1",
+      "setup": "",
+      "run": "cat output4.log",
+      "input": "",
+      "output": "Test 1 passed",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Debugging 2 ",
+      "setup": "",
+      "run": "cat output4.log",
+      "input": "",
+      "output": "Test 2 passed",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "Debugging 3",
+      "setup": "",
+      "run": "cat output4.log",
+      "input": "",
+      "output": "Test 3 passed",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    }
+  ]
+}
