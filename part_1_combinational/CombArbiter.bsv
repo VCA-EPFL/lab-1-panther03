@@ -7,7 +7,9 @@ typedef struct {
 } ResultArbiter deriving (Eq, FShow);
 
 function ResultArbiter arbitrate(Vector#(16, Bit#(1)) ready, Vector#(16, Bit#(31)) data);
-	return ResultArbiter{valid: False, data : 0, index: 0};
-	// TODO
+	ResultArbiter ra = ResultArbiter{valid: False, data : 0, index: 0};
+	for (Integer i = 0; i < 16; i = i + 1)
+		if (!ra.valid && unpack(ready[i])) ra = ResultArbiter{valid: True, data: data[i], index: fromInteger(i)};
+	return ra;
 endfunction
 

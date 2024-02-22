@@ -1,7 +1,7 @@
 import Vector::*;
 import BRAM::*;
 
-// Time spent on VectorDot: ____
+// Time spent on VectorDot: 2-3h
 
 // Please annotate the bugs you find.
 
@@ -20,10 +20,11 @@ module mkVectorDot (VD);
     BRAM1Port#(Bit#(8), Bit#(32)) b <- mkBRAM1Server(cfg2);
 
     Reg#(Bit#(32)) output_res <- mkReg(unpack(0));
-
     Reg#(Bit#(8)) dim <- mkReg(0);
 
     Reg#(Bool) ready_start <- mkReg(False);
+    // TODO: these registers probably need to be bigger?
+    // if we can store dim * i then we need sz(dim) + sz(i)
     Reg#(Bit#(8)) pos_a <- mkReg(unpack(0));
     Reg#(Bit#(8)) pos_b <- mkReg(unpack(0));
     Reg#(Bit#(8)) pos_out <- mkReg(unpack(0));
@@ -36,29 +37,32 @@ module mkVectorDot (VD);
     Reg#(Bit#(2)) i <- mkReg(0);
 
 
-    rule process_a (ready_start && !done_a && !req_a_ready);
+    rule process_a (ready_start && !done_a && !req_a_ready && !done_all);
         a.portA.request.put(BRAMRequest{write: False, // False for read
                             responseOnWrite: False,
                             address: zeroExtend(pos_a),
                             datain: ?});
-
-        if (pos_a < dim*zeroExtend(i))
+        // BUG #2: wrong comparison, should be + dim
+        if (pos_a < dim*zeroExtend(i)+dim) begin
             pos_a <= pos_a + 1;
-        else done_a <= True;
+        end else begin
+            done_a <= True;
+        end
 
         req_a_ready <= True;
 
     endrule
 
-    rule process_b (ready_start && !done_b && !req_b_ready);
+    rule process_b (ready_start && !done_b && !req_b_ready && !done_all);
         b.portA.request.put(BRAMRequest{write: False, // False for read
                 responseOnWrite: False,
                 address: zeroExtend(pos_b),
                 datain: ?});
-
-        if (pos_b < dim*zeroExtend(i))
+        if (pos_b < dim*zeroExtend(i)+dim) begin
             pos_b <= pos_b + 1;
-        else done_b <= True;
+        end else begin 
+            done_b <= True;
+        end
     
         req_b_ready <= True;
     endrule
@@ -67,13 +71,13 @@ module mkVectorDot (VD);
         let out_a <- a.portA.response.get();
         let out_b <- b.portA.response.get();
 
-        output_res <=  out_a*out_b;     
+        // BUG #1: doesn't actually compute dot product, only overwrites
+        output_res <= output_res + out_a*out_b;     
         pos_out <= pos_out + 1;
         
         if (pos_out == dim-1) begin
             done_all <= True;
         end
-
 
         req_a_ready <= False;
         req_b_ready <= False;
@@ -85,15 +89,20 @@ module mkVectorDot (VD);
         ready_start <= True;
         dim <= dim_in;
         done_all <= False;
-        pos_a <= dim_in*zeroExtend(i);
-        pos_b <= dim_in*zeroExtend(i);
+        i <= i_in;
+        // BUG #5: i hasn't updated here yet so we need to use i_in
+        pos_a <= dim_in*zeroExtend(i_in);
+        pos_b <= dim_in*zeroExtend(i_in);
         done_a <= False;
         done_b <= False;
         pos_out <= 0;
-        i <= i_in;
+        // BUG #4: need to reset output_res
+        output_res <= 0;
     endmethod
 
     method ActionValue#(Bit#(32)) response() if (done_all);
+        // BUG #3: ready_start is never reset
+        ready_start <= False;
         return output_res;
     endmethod
 

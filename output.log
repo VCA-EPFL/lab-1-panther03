@@ -1,0 +1,17 @@
+Test passed
+Test passed
+Left barrel shifter test passed
+Warning: file 'v1.hex' for memory 'a_memory' has a gap at addresses 64 to 255.
+Warning: file 'v2.hex' for memory 'b_memory' has a gap at addresses 64 to 255.
+STARTING TEST FOR VECTOR DOT PRODUCT DIM 16... index 0
+GOT        410
+Test 0 passed
+STARTING TEST FOR VECTOR DOT PRODUCT DIM 16... index 1
+GOT        354
+Test 1 passed
+STARTING TEST FOR VECTOR DOT PRODUCT DIM 16... index 2
+GOT        524
+Test 2 passed
+STARTING TEST FOR VECTOR DOT PRODUCT DIM 16... index 3
+GOT        410
+Test 3 passed

@@ -2,12 +2,12 @@
 
 3.  Shifters
 
->>
+>> 16 16:1 selectors.
 
->>
+>> No muxes.
 
->>
+>> 64 2:1 selectors.
 
 ---
 
-Time spent on Part 1: _____
+Time spent on Part 1: 2h
